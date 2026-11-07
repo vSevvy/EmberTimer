@@ -1,3 +1,4 @@
+
 (function () {
     "use strict";
 
@@ -86,7 +87,7 @@
     function primeAudio() {
         const context = makeAudioContext();
         if (context && context.state !== "running") {
-            context.resume().catch(() => {});
+            context.resume().catch(() => { });
         }
     }
 
@@ -127,7 +128,7 @@
             return;
         }
 
-        // Catch up through MULTIPLE phases when a laptop sleeps or a tab is throttled.
+        // Handle phases missed while the browser tab was inactive.
         let overdue = -diff;
         let crossedBoundary = false;
         while (true) {
@@ -148,7 +149,7 @@
             overdue -= nextDuration;
         }
         if (crossedBoundary) {
-            // One chime per catch-up, rather than a pile of overlapping alarms.
+            // Play one chime even when multiple sessions were missed.
             void playChime();
             renderStatic();
             save();
@@ -195,7 +196,7 @@
         const percent = schedule.totalSeconds ? Math.min(100, elapsed / (schedule.totalSeconds * 1000) * 100) : 100;
         ui.dayProgressBar.style.width = `${percent.toFixed(3)}%`;
         ui.dayProgressPercent.textContent = `${Math.floor(percent)}%`;
-        ui.dayProgressLabel.textContent = complete() ? "Your day is complete" : running ? "Your day is in motion" : started ? "Paused, whenever you're ready" : "Your day is ready";
+        ui.dayProgressLabel.textContent = complete() ? "Workday complete" : running ? "Timer running" : started ? "Timer paused" : "Ready to start";
         ui.finishBy.textContent = complete() ? "All done" : running ? clockFormat.format(new Date(Date.now() + totalRemainingMs())) : started ? "When resumed" : "When you start";
     }
 
@@ -214,9 +215,9 @@
             const info = document.createElement("div");
             info.className = "timeline-info";
             const title = document.createElement("strong");
-            title.textContent = phase.kind === "focus" ? `Focus session ${String(phase.number).padStart(2, "0")}` : `A little break ${String(phase.number).padStart(2, "0")}`;
+            title.textContent = phase.kind === "focus" ? `Focus session ${String(phase.number).padStart(2, "0")}` : `Break ${String(phase.number).padStart(2, "0")}`;
             const description = document.createElement("span");
-            description.textContent = phase.kind === "focus" ? "Settle into what matters" : "Step away and reset";
+            description.textContent = phase.kind === "focus" ? "Focus session" : "Break session";
             info.append(title, description);
 
             const duration = document.createElement("span");
@@ -238,15 +239,15 @@
             `${isBreak ? "BREAK" : "SESSION"} ${String(active.number).padStart(2, "0")} / ${isBreak ? schedule.breakCount : schedule.focusCount}`;
         ui.modeLabel.textContent = complete() ? "DAY COMPLETE" : isBreak ? "BREAK TIME" : "FOCUS TIME";
         ui.modeDot.classList.toggle("break-dot", Boolean(isBreak));
-        ui.timerSubtitle.textContent = complete() ? "You showed up for yourself today." :
-            running && isBreak ? "Put the kettle on. You've earned this." :
-            running ? "Just one thing, just for now." :
-            isBreak ? "Five quiet minutes are yours." :
-            started ? "Your work will be here when you're ready." : "A moment to settle in.";
+        ui.timerSubtitle.textContent = complete() ? "All sessions finished." :
+            running && isBreak ? "Take a break. Your next session starts automatically." :
+                running ? "Focus session in progress." :
+                    isBreak ? "Break ready." :
+                        started ? "Paused. Resume whenever you're ready." : "Press start when you're ready.";
 
         ui.startPauseButton.disabled = false;
-        ui.startLabel.textContent = complete() ? "Begin a new day" : running ? "Pause timer" :
-            isBreak ? "Start your break" : started ? "Resume focus" : "Start focusing";
+        ui.startLabel.textContent = complete() ? "Restart day" : running ? "Pause timer" :
+            isBreak ? "Start break" : started ? "Resume timer" : "Start timer";
         ui.startIcon.textContent = running ? "Ⅱ" : "▶";
         ui.resetButton.disabled = complete();
         ui.skipButton.disabled = complete();
@@ -343,7 +344,7 @@
             EmberPlanner.buildPlan(proposed);
             if ((started || phaseIndex > 0) && !window.confirm("Update the plan and start a fresh day? Current progress will reset.")) return;
             restart(proposed);
-            ui.formHint.textContent = "Your new rhythm is ready.";
+            ui.formHint.textContent = "Schedule updated.";
         } catch (error) { ui.formHint.textContent = error.message; }
     });
     ui.soundToggle.addEventListener("change", () => {

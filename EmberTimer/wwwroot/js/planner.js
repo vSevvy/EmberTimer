@@ -1,4 +1,5 @@
-/* Tiny pure schedule builder. No dependencies; also exercised by tests/planner.test.js. */
+
+// Creates focus and break phases from workday settings.
 (function (root) {
     "use strict";
 
@@ -33,8 +34,7 @@
             remainingMinutes -= workMinutes;
             if (remainingMinutes === 0) break;
 
-            // If hours mean productive work, breaks do NOT use up the selected hours.
-            // If hours mean elapsed time, breaks are included in those hours.
+            // Count breaks towards the day length only in elapsed-time mode.
             const restMinutes = basis === "focus" ? rest : Math.min(rest, remainingMinutes);
             breakCount += 1;
             phases.push({
