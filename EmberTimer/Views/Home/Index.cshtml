@@ -1,0 +1,506 @@
+@{
+    ViewData["Title"] = "Focus studio";
+}
+
+<div class="app-shell">
+    <header class="topbar">
+        <a class="brand" href="/" aria-label="Ember home">
+            <span class="brand-mark" aria-hidden="true"><span></span></span>
+            <span class="brand-wordmark">
+                ember<span class="brand-dot">.</span>
+                <small>YOUR FOCUS STUDIO</small>
+            </span>
+        </a>
+
+        <div class="header-right">
+            <span class="header-date" id="todayDate"></span>
+            <span class="header-divider" aria-hidden="true"></span>
+            <span class="presence">
+                <span class="presence-dot"></span>
+                a little peace, on purpose
+            </span>
+        </div>
+    </header>
+
+    <main class="dashboard">
+        <div class="main-column">
+
+            <!-- MAIN TIMER -->
+            <section class="timer-card"
+                     aria-labelledby="timerHeading">
+
+                <div class="timer-card-inner">
+
+                    <div class="section-kicker">
+                        <span class="tiny-spark" aria-hidden="true">✦</span>
+                        THE FOCUS RITUAL
+                        <span class="kicker-line"></span>
+                        <span id="sessionIndicator">SESSION 01</span>
+                    </div>
+
+                    <div class="hero-heading">
+                        <h1 id="timerHeading">
+                            Make room for<br />
+                            <em>the work.</em>
+                        </h1>
+                        <p>
+                            A little light. A little time.
+                            One thing at a time.
+                        </p>
+                    </div>
+
+                    <!-- CIGARETTE ANIMATION -->
+                    <div class="scene-wrap">
+                        <svg id="cigaretteVisual"
+                             viewBox="0 0 760 230"
+                             role="img"
+                             aria-label="A cigarette that gets shorter as the timer runs"
+                             xmlns="http://www.w3.org/2000/svg">
+
+                            <defs>
+                                <linearGradient id="paperGradient"
+                                                x1="0" y1="0"
+                                                x2="0" y2="1">
+                                    <stop offset="0" stop-color="#fff4db" />
+                                    <stop offset="0.4" stop-color="#f0e3cf" />
+                                    <stop offset="1" stop-color="#b9aa94" />
+                                </linearGradient>
+
+                                <linearGradient id="filterGradient"
+                                                x1="0" y1="0"
+                                                x2="0" y2="1">
+                                    <stop offset="0" stop-color="#d8ad79" />
+                                    <stop offset="0.5" stop-color="#bb8751" />
+                                    <stop offset="1" stop-color="#775235" />
+                                </linearGradient>
+
+                                <radialGradient id="emberGradient">
+                                    <stop offset="0"
+                                          stop-color="#ffc074"
+                                          stop-opacity=".62" />
+                                    <stop offset="1"
+                                          stop-color="#ff742c"
+                                          stop-opacity="0" />
+                                </radialGradient>
+
+                                <filter id="smokeBlur">
+                                    <feGaussianBlur stdDeviation="2.4" />
+                                </filter>
+
+                                <filter id="emberBlur">
+                                    <feGaussianBlur stdDeviation="6" />
+                                </filter>
+                            </defs>
+
+                            <!-- CIGARETTE SHADOW -->
+                            <ellipse cx="377"
+                                     cy="177"
+                                     rx="305"
+                                     ry="11"
+                                     fill="#000000"
+                                     opacity=".24"
+                                     filter="url(#emberBlur)" />
+
+                            <!-- FILTER -->
+                            <g class="cigarette-filter">
+                                <rect x="126"
+                                      y="118"
+                                      width="91"
+                                      height="30"
+                                      rx="4"
+                                      fill="url(#filterGradient)" />
+
+                                <rect x="136"
+                                      y="119"
+                                      width="2"
+                                      height="28"
+                                      fill="#fce1ae"
+                                      opacity=".21" />
+
+                                <rect x="203"
+                                      y="118"
+                                      width="4"
+                                      height="30"
+                                      fill="#704a30"
+                                      opacity=".38" />
+
+                                <path d="M 148 122 L 148 143
+                                M 157 123 L 157 142
+                                M 174 123 L 174 143
+                                M 192 123 L 192 143"
+                                      stroke="#704725"
+                                      opacity=".12" />
+                            </g>
+
+                            <!-- BURNING PAPER -->
+                            <g id="burningPaper">
+                                <rect id="paperBody"
+                                      x="217"
+                                      y="118"
+                                      width="409"
+                                      height="30"
+                                      rx="2"
+                                      fill="url(#paperGradient)" />
+
+                                <rect id="paperShine"
+                                      x="217"
+                                      y="119"
+                                      width="409"
+                                      height="3"
+                                      fill="#fffbea"
+                                      opacity=".48" />
+
+                                <rect id="paperShadow"
+                                      x="217"
+                                      y="145"
+                                      width="409"
+                                      height="3"
+                                      fill="#463c31"
+                                      opacity=".15" />
+                            </g>
+
+                            <!-- EMBER -->
+                            <g id="burningEnd">
+                                <circle id="emberHalo"
+                                        cx="626"
+                                        cy="133"
+                                        r="43"
+                                        fill="url(#emberGradient)" />
+
+                                <rect id="ashEdge"
+                                      x="613"
+                                      y="118"
+                                      width="13"
+                                      height="30"
+                                      rx="2"
+                                      fill="#5c5046"
+                                      opacity=".95" />
+
+                                <line id="emberLine"
+                                      x1="626"
+                                      y1="119"
+                                      x2="626"
+                                      y2="147"
+                                      stroke="#ff9853"
+                                      stroke-width="4"
+                                      stroke-linecap="round" />
+
+                                <circle id="emberCore"
+                                        cx="626"
+                                        cy="133"
+                                        r="5"
+                                        fill="#ffd3a2"
+                                        opacity=".70" />
+                            </g>
+
+                            <!-- SMOKE -->
+                            <g id="smokePlume" class="smoke-plume">
+                                <path class="smoke smoke-one"
+                                      d="M 625 114 C 607 98, 646 87, 628 68 S 618 35, 641 16"
+                                      stroke="#cfc7bd"
+                                      stroke-width="3"
+                                      stroke-linecap="round"
+                                      fill="none"
+                                      opacity=".35"
+                                      filter="url(#smokeBlur)" />
+
+                                <path class="smoke smoke-two"
+                                      d="M 636 114 C 654 94, 621 76, 645 57 S 659 29, 648 12"
+                                      stroke="#ebe2d6"
+                                      stroke-width="2"
+                                      stroke-linecap="round"
+                                      fill="none"
+                                      opacity=".27" />
+
+                                <path class="smoke smoke-three"
+                                      d="M 619 116 C 598 97, 625 74, 612 58"
+                                      stroke="#dcd4c7"
+                                      stroke-width="2"
+                                      stroke-linecap="round"
+                                      fill="none"
+                                      opacity=".18" />
+                            </g>
+
+                            <g class="scenery-stars"
+                               fill="#f6dcb6"
+                               opacity=".4">
+                                <circle cx="90" cy="74" r="2" />
+                                <circle cx="685" cy="95" r="1.4" />
+                                <circle cx="551" cy="41" r="1" />
+                            </g>
+                        </svg>
+
+                        <div class="scene-note">
+                            <span class="scene-note-line"></span>
+                            <span>slow and steady does it</span>
+                            <span class="scene-note-line"></span>
+                        </div>
+                    </div>
+
+                    <!-- TIMER DISPLAY -->
+                    <div class="timer-readout">
+                        <div class="mode-row">
+                            <span class="mode-dot" id="modeDot"></span>
+                            <span id="modeLabel">FOCUS TIME</span>
+                        </div>
+
+                        <div id="timerDisplay"
+                             class="timer-display"
+                             role="timer"
+                             aria-live="off">
+                            30:00
+                        </div>
+
+                        <p id="timerSubtitle">
+                            A moment to settle in.
+                        </p>
+
+                        <div class="session-progress-track">
+                            <div id="sessionProgress"
+                                 class="session-progress-fill">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TIMER CONTROLS -->
+                    <div class="timer-controls">
+                        <button id="startPauseButton"
+                                class="button button-primary"
+                                type="button">
+                            <span id="startIcon"
+                                  class="play-icon"
+                                  aria-hidden="true">▶</span>
+                            <span id="startLabel">Start focusing</span>
+                        </button>
+
+                        <button id="resetButton"
+                                class="button button-quiet"
+                                type="button"
+                                title="Restart this session">
+                            ↺ <span>Reset</span>
+                        </button>
+
+                        <button id="skipButton"
+                                class="button button-quiet"
+                                type="button"
+                                title="Move to the next session">
+                            ↪ <span>Skip</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- DAILY SCHEDULE -->
+            <section class="timeline-card"
+                     aria-labelledby="timelineHeading">
+
+                <div class="section-heading">
+                    <div>
+                        <span class="eyebrow">
+                            YOUR DAY, IN LITTLE PIECES
+                        </span>
+                        <h2 id="timelineHeading">
+                            The rhythm of today
+                        </h2>
+                    </div>
+
+                    <span id="scheduleCount" class="muted-pill">
+                        16 focus blocks
+                    </span>
+                </div>
+
+                <div class="day-progress-head">
+                    <span id="dayProgressLabel">
+                        Your day is ready
+                    </span>
+                    <strong id="dayProgressPercent">0%</strong>
+                </div>
+
+                <div class="day-progress-track">
+                    <div id="dayProgressBar"></div>
+                </div>
+
+                <div id="scheduleList"
+                     class="schedule-list"
+                     aria-label="Today's work and break schedule">
+                </div>
+            </section>
+
+        </div>
+
+        <!-- SIDEBAR -->
+        <aside class="side-column"
+               aria-label="Your workday settings">
+
+            <!-- WORKDAY PLANNER -->
+            <section class="card plan-card"
+                     aria-labelledby="planHeading">
+
+                <div class="section-heading side-heading">
+                    <div>
+                        <span class="eyebrow">YOUR DAILY RITUAL</span>
+                        <h2 id="planHeading">Shape your day</h2>
+                    </div>
+                    <span class="sun-glyph" aria-hidden="true">✺</span>
+                </div>
+
+                <form id="planForm">
+
+                    <label for="dayHours">Workday length</label>
+
+                    <div class="field-with-suffix">
+                        <input type="number"
+                               id="dayHours"
+                               name="dayHours"
+                               min="0.5"
+                               max="16"
+                               step="0.5"
+                               value="9"
+                               required />
+                        <span>hours</span>
+                    </div>
+
+                    <label for="dayBasis">
+                        What does that include?
+                    </label>
+
+                    <select id="dayBasis" name="dayBasis">
+                        <option value="elapsed">
+                            Work + breaks (total time)
+                        </option>
+                        <option value="focus">
+                            Focus time only
+                        </option>
+                    </select>
+
+                    <div class="form-columns">
+
+                        <div>
+                            <label for="focusMinutes">Focus</label>
+                            <div class="field-with-suffix">
+                                <input type="number"
+                                       id="focusMinutes"
+                                       name="focusMinutes"
+                                       min="5"
+                                       max="120"
+                                       step="1"
+                                       value="30"
+                                       required />
+                                <span>min</span>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="breakMinutes">Break</label>
+                            <div class="field-with-suffix">
+                                <input type="number"
+                                       id="breakMinutes"
+                                       name="breakMinutes"
+                                       min="1"
+                                       max="60"
+                                       step="1"
+                                       value="5"
+                                       required />
+                                <span>min</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button id="applyPlanButton"
+                            type="submit"
+                            class="button button-outline">
+                        Update my day
+                        <span aria-hidden="true">↗</span>
+                    </button>
+
+                    <p class="form-hint" id="formHint">
+                        Updating the plan starts a fresh day.
+                    </p>
+                </form>
+
+                <div class="plan-stats">
+                    <div>
+                        <span>Focus blocks</span>
+                        <strong id="focusBlocks">16</strong>
+                    </div>
+
+                    <div>
+                        <span>Rest breaks</span>
+                        <strong id="restBlocks">15</strong>
+                    </div>
+
+                    <div>
+                        <span>Finish by</span>
+                        <strong id="finishBy">When you start</strong>
+                    </div>
+                </div>
+
+                <button type="button"
+                        id="restartDayButton"
+                        class="text-button">
+                    Start a fresh day
+                    <span aria-hidden="true">↺</span>
+                </button>
+            </section>
+
+            <!-- SOUND PREFERENCES -->
+            <section class="card ambience-card"
+                     aria-labelledby="ambienceHeading">
+
+                <div class="section-heading side-heading">
+                    <div>
+                        <span class="eyebrow">SMALL COMFORTS</span>
+                        <h2 id="ambienceHeading">
+                            Little preferences
+                        </h2>
+                    </div>
+                    <span class="settings-glyph"
+                          aria-hidden="true">✧</span>
+                </div>
+
+                <div class="preference-row">
+                    <div>
+                        <strong>Session chimes</strong>
+                        <p>
+                            Soft tones when it's time to switch
+                        </p>
+                    </div>
+
+                    <label class="toggle">
+                        <input id="soundToggle"
+                               type="checkbox"
+                               checked
+                               aria-label="Enable session chimes" />
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+
+                <button type="button"
+                        id="testSoundButton"
+                        class="text-button">
+                    Hear the chime
+                    <span aria-hidden="true">♫</span>
+                </button>
+
+                <div class="gentle-note">
+                    <span aria-hidden="true">✦</span>
+                    <p>
+                        You don't have to race the clock.
+                        Just give this moment your attention.
+                    </p>
+                </div>
+            </section>
+
+        </aside>
+    </main>
+
+    <footer class="footer">
+        <span>EMBER / MADE FOR QUIET PROGRESS</span>
+        <span>Take your time. Make it count.</span>
+    </footer>
+</div>
+
+@section Scripts {
+    <script src="~/js/planner.js" asp-append-version="true"></script>
+    <script src="~/js/timer.js" asp-append-version="true"></script>
+}
