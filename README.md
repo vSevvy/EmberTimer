@@ -19,28 +19,6 @@ dotnet run --launch-profile "EmberTimer (local HTTP)"
 
 No NuGet add-on packages, Google API key, account login, external font, or database is required.
 
-## Connect YouTube Music (Chrome, Edge, Brave)
-
-YouTube's public APIs do **not** expose the song that is currently playing in a user's YouTube Music tab. A normal MVC website also **cannot read a different website's tab**. The included optional browser companion is the local solution.
-
-1. Start Ember at `http://localhost:5074/`.
-2. In Chrome or Edge, open `chrome://extensions` (Edge: `edge://extensions`), enable **Developer mode**, and click **Load unpacked**.
-3. Choose the **`YouTubeMusicBridge`** directory found beside the MVC app. (Select the folder itself, not the ZIP or the manifest file.)
-4. On Ember, expand **Connect your YouTube Music** in the music card and click **Copy** to copy the pairing code.
-5. Click the Ember companion icon in your browser's extension list, paste the pairing code and click **Pair with Ember**. The popup should say **Paired!**.
-6. Open or refresh `https://music.youtube.com/` in the **same browser**, and play a track. Within a few seconds the track details appear on Ember.
-
-**After restarting Ember**, its token changes. Repeat steps 4–5. This is intentional for a small local-only prototype. YouTube Music may change its HTML and require an update to `YouTubeMusicBridge/content.js` selectors. This works with YouTube Music **in the browser**, not music playing in a separate desktop/mobile application.
-
-### Music bridge design & security
-
-- The extension runs only on `https://music.youtube.com/` and reads song title, artist, artwork URL, playback state and a track URL (when available).
-- The extension background service worker POSTs this information to `http://localhost:5074/api/music/now-playing`, including a random **40-character pairing token** from the MVC app.
-- The server verifies the token and stores the latest metadata **in RAM only**. It forgets the track 18 seconds after the extension stops reporting. It does not collect cookies, audio, passwords or OAuth credentials.
-- The MVC app fetches `GET /api/music/now-playing` on the same origin every 4 seconds to update the UI.
-- The extension needs no access to browsing history or Google account information.
-- **Keep Ember on localhost only.** The starter is not designed for public deployment or multiple users; add proper authentication, HTTPS and a persistent per-user token before hosting it publicly.
-
 ## Timer behaviour
 
 | Workday setting | Focus sessions | Breaks | Elapsed duration |
@@ -64,10 +42,6 @@ YouTube's public APIs do **not** expose the song that is currently playing in a 
 | `EmberTimer/wwwroot/css/site.css` | Cozy dark styling and smoke animation |
 | `EmberTimer/wwwroot/js/planner.js` | Work/break schedule builder |
 | `EmberTimer/wwwroot/js/timer.js` | Timer state, progress rendering, chimes, persistence |
-| `EmberTimer/wwwroot/js/music.js` | Music card polling and pairing code copy |
-| `EmberTimer/Services/MusicBridge.cs` | Local metadata receiver and pairing key |
-| `EmberTimer/Controllers/MusicController.cs` | Music GET/POST endpoints |
-| `YouTubeMusicBridge/content.js` | Reads track data from the YouTube Music tab |
 
 ## Quick planner tests
 
